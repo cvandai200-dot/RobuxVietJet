@@ -1,0 +1,13 @@
+{
+  "name": "robuxfast-shop",
+  "version": "2.0.0",
+  "description": "Shop nạp Robux với Node.js proxy cho avatar",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

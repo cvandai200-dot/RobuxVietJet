@@ -1,0 +1,46 @@
+/* RobuxFast Custom Styles - v3 */
+
+.logo-font {
+    font-family: 'Space Grotesk', 'Inter', system_ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.nav-link { transition: all 0.1s ease; }
+.nav-link:hover { color: #e0f0fe; }
+
+.section { display: none; }
+.section.active { display: block; }
+
+.robux-card { transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); position: relative; overflow: hidden; }
+.robux-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+.robux-card.selected { box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.4); border-color: #0ea5e9; transform: scale(1.01); }
+
+.robux-card .popular-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    padding: 1px 8px;
+    border-radius: 9999px;
+    background: linear-gradient(to right, #f59e0b, #d97706);
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.payment-option { transition: all 0.1s ease; }
+.payment-option.active, .payment-option.border-sky-500 { background-color: #18181b; border-color: #0ea5e9; }
+
+.admin-tab { transition: all 0.1s ease; border-bottom: 3px solid transparent; }
+.admin-tab.active { background-color: #18181b; color: white; border-bottom: 3px solid #0ea5e9; }
+
+.status-badge { font-size: 11px; padding: 1px 10px; border-radius: 9999px; font-weight: 600; display: inline-block; }
+.status-pending { background-color: #451a03; color: #fcd34d; }
+.status-completed { background-color: #14532d; color: #4ade80; }
+.status-cancelled { background-color: #450a0a; color: #f87171; }
+
+@media (max-width: 768px) {
+    .robux-card { padding: 14px; }
+    .robux-card .text-4xl, .robux-card .text-5xl { font-size: 2.1rem; line-height: 2.4rem; }
+}

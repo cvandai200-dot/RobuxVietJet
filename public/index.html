@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RbVietJet • Nạp Robux</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <!-- NAVBAR -->
+    <nav id="main-nav" class="border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-lg sticky top-0 z-50 hidden">
+        <div class="max-w-screen-xl mx-auto px-4 md:px-6">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-x-2 cursor-pointer" onclick="showSection('shop')">
+                    <img src="https://i.ibb.co/m5m6dsSm/38511-removebg-preview.png" alt="RbVietJet" class="h-9 w-auto object-contain">
+                </div>
+
+                <div class="hidden md:flex items-center gap-x-2 text-sm font-medium" id="nav-menu">
+                    <button onclick="showSection('shop')" class="nav-link px-4 py-2 rounded-2xl hover:bg-zinc-900" data-section="shop">Shop</button>
+                    <button onclick="showSection('guide')" class="nav-link px-4 py-2 rounded-2xl hover:bg-zinc-900" data-section="guide">Hướng dẫn</button>
+                    <button onclick="showSection('profile')" class="nav-link px-4 py-2 rounded-2xl hover:bg-zinc-900" data-section="profile">Hồ sơ</button>
+                    <button onclick="showSection('admin')" id="admin-nav-btn" class="nav-link px-4 py-2 rounded-2xl hover:bg-zinc-900 hidden" data-section="admin">
+                        <i class="fa-solid fa-shield-halved mr-1.5"></i> Admin
+                    </button>
+                </div>
+
+                <!-- Hamburger cho mobile -->
+                <button onclick="toggleMobileMenu()" class="md:hidden flex items-center justify-center w-10 h-10 text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-2xl">
+                    <i class="fa-solid fa-bars text-xl" id="hamburger-icon"></i>
+                </button>
+
+                <div class="flex items-center gap-x-3" id="user-info">
+                    <div onclick="showSection('profile')" class="flex items-center gap-x-2 cursor-pointer hover:bg-zinc-900 px-3 py-1.5 rounded-2xl">
+                        <div class="w-8 h-8 bg-zinc-700 rounded-full flex items-center justify-center overflow-hidden">
+                            <i class="fa-solid fa-user text-zinc-400"></i>
+                        </div>
+                        <div class="hidden md:block">
+                            <div id="nav-username" class="font-semibold text-sm"></div>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-2 text-xs font-medium text-zinc-400 hover:text-red-400">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden absolute left-0 right-0 top-[64px] bg-zinc-900 border-b border-zinc-800 px-4 py-3 z-50">
+                <div class="flex flex-col text-sm">
+                    <button onclick="showSection('shop'); toggleMobileMenu()" class="text-left py-3 px-2 hover:bg-zinc-800 rounded-2xl">Shop</button>
+                    <button onclick="showSection('guide'); toggleMobileMenu()" class="text-left py-3 px-2 hover:bg-zinc-800 rounded-2xl">Hướng dẫn</button>
+                    <button onclick="showSection('profile'); toggleMobileMenu()" class="text-left py-3 px-2 hover:bg-zinc-800 rounded-2xl">Hồ sơ</button>
+                    <button onclick="showSection('admin'); toggleMobileMenu()" id="mobile-admin-btn" class="text-left py-3 px-2 hover:bg-zinc-800 rounded-2xl hidden">Admin</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LOGIN SECTION -->
+    <div id="login-section" class="section active max-w-md mx-auto px-4 pt-12 md:pt-16">
+        <div class="text-center mb-8">
+            <img src="https://i.ibb.co/m5m6dsSm/38511-removebg-preview.png" alt="RbVietJet" class="w-full max-w-[420px] mx-auto mb-2 object-contain">
+            <p class="text-zinc-400 text-sm">Dịch vụ nạp Robux an toàn &amp; nhanh chóng</p>
+        </div>
+
+        <div id="login-form-container" class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6 md:p-8">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Đăng nhập</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Tên đăng nhập</label>
+                    <input id="login-username" type="text" placeholder="Tên đăng nhập" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Mật khẩu</label>
+                    <input id="login-password" type="password" placeholder="Mật khẩu" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+            </div>
+            
+            <button onclick="login()" class="mt-6 w-full py-3.5 bg-sky-500 hover:bg-sky-600 font-semibold rounded-2xl transition-all active:scale-[0.985]">
+                Đăng nhập
+            </button>
+            
+            <div class="text-center mt-4">
+                <span onclick="showForgotPassword()" class="text-sm text-zinc-400 hover:text-sky-400 cursor-pointer">Quên mật khẩu?</span>
+            </div>
+            
+            <div class="text-center mt-5 text-sm">
+                Chưa có tài khoản? 
+                <span onclick="showRegisterForm()" class="text-sky-400 hover:underline cursor-pointer font-medium">Đăng ký ngay</span>
+            </div>
+        </div>
+
+        <div id="register-form-container" class="hidden bg-zinc-900 border border-zinc-700 rounded-3xl p-6 md:p-8 mt-4">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Tạo tài khoản mới</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Tên đăng nhập</label>
+                    <input id="reg-username" type="text" placeholder="yourname" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Email <span class="text-red-400">*</span></label>
+                    <input id="reg-email" type="email" placeholder="you@email.com" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Mật khẩu</label>
+                    <input id="reg-password" type="password" placeholder="Ít nhất 4 ký tự" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+            </div>
+            
+            <button onclick="register()" class="mt-6 w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 font-semibold rounded-2xl transition-all active:scale-[0.985]">
+                Tạo tài khoản
+            </button>
+            
+            <div class="text-center mt-5 text-sm">
+                Đã có tài khoản? 
+                <span onclick="showLoginForm()" class="text-sky-400 hover:underline cursor-pointer font-medium">Đăng nhập</span>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- SHOP SECTION -->
+    <div id="shop-section" class="section max-w-screen-xl mx-auto px-4 md:px-6 pt-6 pb-16">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-6 gap-y-2">
+            <div>
+                <div class="text-sky-400 text-xs tracking-[2px] font-semibold">NẠP NGAY HÔM NAY</div>
+                <h1 class="text-3xl md:text-4xl font-bold tracking-tighter">Chọn gói Robux</h1>
+            </div>
+        </div>
+
+        <div id="packages-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-8 md:mb-10"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+            <!-- Form -->
+            <div class="lg:col-span-3 bg-zinc-900 border border-zinc-700 rounded-3xl p-5 md:p-7">
+                <h3 class="font-semibold text-xl mb-5">Thông tin đơn hàng</h3>
+                
+                <div class="mb-5">
+                    <label class="block text-sm font-medium text-zinc-300 mb-2">Tên Roblox <span class="text-red-400">*</span></label>
+                    <div class="flex gap-3 items-center">
+                        <div class="flex-1">
+                            <input id="roblox-username" type="text" placeholder="ProGamer_VN" oninput="debounceFetchRobloxAvatar()"
+                                   class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                        </div>
+                        <div id="roblox-avatar-preview" class="w-12 h-12 bg-zinc-800 border border-zinc-700 rounded-2xl flex-shrink-0 overflow-hidden hidden">
+                            <img id="roblox-avatar-img" class="w-full h-full object-cover" alt="Avatar">
+                        </div>
+                    </div>
+                    <div id="roblox-username-status" class="text-xs mt-1.5 px-1 text-zinc-400"></div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-sm font-medium text-zinc-300 mb-2">Số điện thoại</label>
+                    <input id="phone" type="tel" placeholder="0987 654 321" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-zinc-300 mb-2">Ghi chú</label>
+                    <textarea id="note" rows="2" placeholder="Ghi chú cho đơn hàng..." class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm resize-y outline-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="lg:col-span-2">
+                <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5 md:p-6 sticky top-20">
+                    <h4 class="font-semibold mb-4">Tóm tắt đơn hàng</h4>
+                    
+                    <div id="summary-content" class="min-h-[100px]">
+                        <div class="py-6 text-center text-zinc-400 text-sm">Chọn gói nạp ở trên</div>
+                    </div>
+
+                    <button onclick="confirmOrder()" class="mt-6 w-full py-4 bg-emerald-500 hover:bg-emerald-600 font-semibold rounded-2xl text-base transition-all active:scale-[0.985]">
+                        TẠO ĐƠN HÀNG
+                    </button>
+                    <p class="text-center text-[10px] text-zinc-500 mt-2">Thanh toán qua Zalo • Robux được cộng sau khi xác nhận</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUIDE SECTION -->
+    <div id="guide-section" class="section max-w-3xl mx-auto px-4 md:px-6 pt-8 pb-16">
+        <div class="flex items-center gap-x-3 mb-8">
+            <!-- Nút Back cho mobile -->
+            <button onclick="showSection('shop')" 
+                    class="md:hidden flex items-center justify-center w-9 h-9 text-zinc-400 hover:text-white active:bg-zinc-800 rounded-2xl -ml-1">
+                <i class="fa-solid fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tighter">Hướng dẫn nạp Robux</h1>
+        </div>
+        
+        <div class="space-y-5 text-zinc-300">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-x-3"><span class="text-sky-400">1.</span> Chọn gói nạp phù hợp</h3>
+                <p class="text-sm">Chọn gói Robux theo nhu cầu. Giá đã bao gồm phí dịch vụ.</p>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-x-3"><span class="text-sky-400">2.</span> Nhập tên Roblox</h3>
+                <p class="text-sm">Nhập đúng tên tài khoản Roblox. Avatar sẽ hiện nếu proxy hoạt động tốt.</p>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-x-3"><span class="text-sky-400">3.</span> Chọn phương thức thanh toán</h3>
+                <p class="text-sm">Hỗ trợ Momo, ZaloPay, Chuyển khoản ngân hàng và Thẻ quốc tế.</p>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-x-3"><span class="text-sky-400">4.</span> Nhận Robux</h3>
+                <p class="text-sm">Robux sẽ được cộng trực tiếp vào tài khoản của bạn trong vòng <strong>5 - 15 phút</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE SECTION -->
+    <div id="profile-section" class="section max-w-screen-xl mx-auto px-4 md:px-6 pt-6 pb-16">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-x-3">
+                <!-- Nút Back cho mobile -->
+                <button onclick="showSection('shop')" 
+                        class="md:hidden flex items-center justify-center w-9 h-9 text-zinc-400 hover:text-white active:bg-zinc-800 rounded-2xl">
+                    <i class="fa-solid fa-arrow-left text-xl"></i>
+                </button>
+                <h1 class="text-3xl font-bold tracking-tighter">Hồ sơ cá nhân</h1>
+            </div>
+            <button onclick="logout()" class="text-red-400 hover:text-red-500 text-sm font-medium flex items-center gap-x-2">
+                <i class="fa-solid fa-sign-out-alt"></i> <span class="hidden md:inline">Đăng xuất</span>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <div class="flex items-center gap-x-4 mb-6">
+                    <div class="w-14 h-14 bg-zinc-700 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user text-3xl text-zinc-400"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div id="profile-username" class="font-bold text-2xl truncate"></div>
+                        <div id="profile-email" class="text-sm text-zinc-400 mt-0.5"></div>
+                        <div class="text-emerald-400 text-sm">Thành viên</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between"><span class="text-zinc-400">Ngày tham gia</span> <span id="profile-joined" class="font-medium"></span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">Tổng đơn đã mua</span> <span id="profile-total-orders" class="font-semibold"></span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">Tổng chi tiêu</span> <span id="profile-total-spent" class="font-semibold"></span></div>
+                </div>
+
+                <button onclick="showChangePasswordModal()" 
+                        class="mt-5 w-full py-2.5 text-sm bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 rounded-2xl font-medium flex items-center justify-center gap-x-2 transition-all">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Đổi mật khẩu</span>
+                </button>
+            </div>
+
+            <div class="lg:col-span-2 bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-y-2">
+                    <h3 class="font-semibold text-xl">Lịch sử mua hàng của tôi</h3>
+                    <select id="order-filter" onchange="filterMyOrders()" class="bg-zinc-800 border border-zinc-700 text-sm rounded-2xl px-3 py-2 outline-none w-full sm:w-auto">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Chờ thanh toán">Chờ thanh toán</option>
+                        <option value="Đang xử lý">Đang xử lý (cũ)</option>
+                        <option value="Hoàn thành">Hoàn thành</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                </div>
+                <div id="my-orders-list" class="space-y-3 max-h-[420px] overflow-auto pr-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN SECTION -->
+    <div id="admin-section" class="section max-w-screen-xl mx-auto px-4 md:px-6 pt-6 pb-16 hidden">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-bold tracking-tighter">Admin Dashboard</h1>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                <div class="text-xs text-zinc-400">TỔNG ĐƠN HÀNG</div>
+                <div id="admin-total-orders" class="text-3xl md:text-4xl font-bold mt-1 tabular-nums"></div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                <div class="text-xs text-zinc-400">DOANH THU</div>
+                <div id="admin-total-revenue" class="text-3xl md:text-4xl font-bold mt-1 tabular-nums"></div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                <div class="text-xs text-zinc-400">NGƯỜI DÙNG</div>
+                <div id="admin-total-users" class="text-3xl md:text-4xl font-bold mt-1 tabular-nums"></div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-5">
+                <div class="text-xs text-zinc-400">ĐƠN CHỜ</div>
+                <div id="admin-pending-orders" class="text-3xl md:text-4xl font-bold mt-1 tabular-nums text-amber-400"></div>
+            </div>
+        </div>
+
+        <div class="flex border-b border-zinc-700 mb-4 text-sm overflow-x-auto">
+            <button onclick="switchAdminTab('orders')" id="tab-orders" class="admin-tab active px-5 py-3 font-medium whitespace-nowrap">Tất cả đơn hàng</button>
+            <button onclick="switchAdminTab('packages')" id="tab-packages" class="admin-tab px-5 py-3 font-medium whitespace-nowrap">Quản lý gói</button>
+            <button onclick="switchAdminTab('users')" id="tab-users" class="admin-tab px-5 py-3 font-medium whitespace-nowrap">Danh sách người dùng</button>
+        </div>
+
+        <div id="admin-orders-tab">
+            <div class="mb-4">
+                <input id="admin-order-search" type="text" placeholder="🔍 Tìm theo mã đơn (ví dụ: RBX-881234)" 
+                       class="w-full bg-zinc-800 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-2.5 text-sm outline-none"
+                       oninput="renderAdminOrders()">
+            </div>
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-zinc-800 text-xs text-zinc-400">
+                        <tr>
+                            <th class="px-4 md:px-6 py-4 text-left font-normal">Mã đơn</th>
+                            <th class="px-4 md:px-6 py-4 text-left font-normal">User</th>
+                            <th class="px-4 md:px-6 py-4 text-left font-normal hidden md:table-cell">Gói</th>
+                            <th class="px-4 md:px-6 py-4 text-right font-normal">Tổng tiền</th>
+                            <th class="px-4 md:px-6 py-4 text-center font-normal">Trạng thái</th>
+                            <th class="px-4 md:px-6 py-4 text-center font-normal">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-body" class="divide-y divide-zinc-800"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="admin-packages-tab" class="hidden">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-6">
+                <div id="admin-packages-list" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <div id="admin-users-tab" class="hidden">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-3xl overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-zinc-800 text-xs text-zinc-400">
+                        <tr>
+                            <th class="px-4 md:px-6 py-4 text-left font-normal">Username</th>
+                            <th class="px-4 md:px-6 py-4 text-left font-normal hidden md:table-cell">Ngày tham gia</th>
+                            <th class="px-4 md:px-6 py-4 text-right font-normal">Số đơn</th>
+                            <th class="px-4 md:px-6 py-4 text-right font-normal">Tổng chi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-users-body" class="divide-y divide-zinc-800"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" onclick="if (event.target.id === 'success-modal') hideSuccessModal()" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 border border-zinc-700 rounded-3xl max-w-md w-full p-6 md:p-8">
+            <div class="text-center">
+                <div class="mx-auto w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-check-circle text-5xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold">Đặt hàng thành công!</h3>
+            </div>
+            <div id="modal-order-details" class="bg-zinc-950 border border-zinc-700 rounded-2xl p-5 my-6 text-sm space-y-2.5"></div>
+            <button onclick="hideSuccessModal()" class="w-full py-3 bg-white text-zinc-950 font-semibold rounded-2xl">Đóng</button>
+        </div>
+    </div>
+
+    <!-- ZALO PAYMENT MODAL -->
+    <div id="zalo-modal" onclick="if (event.target.id === 'zalo-modal') closeZaloModal()" 
+         class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-zinc-900 border border-zinc-700 rounded-3xl max-w-md w-full p-6">
+            <div id="zalo-modal-details"></div>
+
+            <div class="flex flex-col gap-3 mt-4">
+                <button onclick="copyOrderCode()" 
+                        class="w-full py-3 bg-sky-600 hover:bg-sky-500 font-semibold rounded-2xl flex items-center justify-center gap-x-2">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Copy mã đơn</span>
+                </button>
+                
+                <button onclick="openZalo()" 
+                        class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-2xl flex items-center justify-center gap-x-2">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Mở Zalo thanh toán</span>
+                </button>
+                
+                <button onclick="closeZaloModal()" 
+                        class="w-full py-2.5 text-sm text-zinc-400 hover:text-zinc-300">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Device Verification Modal -->
+    <div id="device-modal" class="hidden fixed inset-0 bg-black/80 z-[200] flex items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-zinc-700 rounded-3xl max-w-sm w-full p-7 text-center">
+            <div class="mx-auto w-14 h-14 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mb-5">
+                <i class="fa-solid fa-shield-halved text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Xác minh thiết bị</h3>
+            <p class="text-sm text-zinc-400 mb-6">Đây là lần đầu bạn truy cập từ thiết bị này.<br>Nhấn nút bên dưới để xác nhận và tiếp tục sử dụng.</p>
+            
+            <button onclick="verifyDevice()" 
+                    class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-2xl transition-all active:scale-[0.985]">
+                Xác nhận thiết bị này
+            </button>
+            
+            <div class="mt-4 text-[10px] text-zinc-500">Giúp bảo vệ khỏi truy cập trái phép</div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container (thay thế alert() của Chrome) -->
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" onclick="if (event.target.id === 'forgot-modal') hideForgotPassword()" 
+         class="hidden fixed inset-0 bg-black/70 z-[200] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="bg-zinc-900 border border-zinc-700 rounded-3xl max-w-sm w-full p-7 text-center">
+            <div class="mx-auto w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-5 overflow-hidden">
+                <img src="https://i.ibb.co/rKs8zGVN/Logo-Zalo-Arc.png" alt="Zalo" class="w-10 h-10 object-contain">
+            </div>
+            <h3 class="text-xl font-bold mb-2">Quên mật khẩu?</h3>
+            <p class="text-sm text-zinc-400 mb-6">Vui lòng nhắn tin cho <span class="font-semibold text-sky-400">Zalo Support</span> để được hỗ trợ lấy lại mật khẩu.</p>
+            
+            <button onclick="openZaloSupport()" 
+                    class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-2xl flex items-center justify-center gap-x-2 mb-3 transition-all active:scale-[0.985]">
+                <img src="https://i.ibb.co/rKs8zGVN/Logo-Zalo-Arc.png" alt="Zalo" class="w-6 h-6 object-contain">
+                <span>Nhắn tin Zalo Support</span>
+            </button>
+            
+            <button onclick="hideForgotPassword()" 
+                    class="w-full py-2.5 text-sm text-zinc-400 hover:text-zinc-300">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" onclick="if (event.target.id === 'change-password-modal') hideChangePasswordModal()" 
+         class="hidden fixed inset-0 bg-black/70 z-[200] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="bg-zinc-900 border border-zinc-700 rounded-3xl max-w-sm w-full p-7">
+            <h3 class="text-xl font-bold mb-5 text-center">Đổi mật khẩu</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Mật khẩu hiện tại</label>
+                    <input id="current-password" type="password" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Mật khẩu mới</label>
+                    <input id="new-password" type="password" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+                <div>
+                    <label class="text-sm text-zinc-300 block mb-1.5">Xác nhận mật khẩu mới</label>
+                    <input id="confirm-new-password" type="password" class="w-full bg-zinc-950 border border-zinc-700 focus:border-sky-500 rounded-2xl px-4 py-3 text-sm outline-none">
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <button onclick="hideChangePasswordModal()" 
+                        class="flex-1 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm font-medium">Hủy</button>
+                <button onclick="changePassword()" 
+                        class="flex-1 py-3 bg-sky-600 hover:bg-sky-500 rounded-2xl text-sm font-semibold">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Zalo Support Button -->
+    <div id="zalo-support-btn" onclick="openZaloSupport()" 
+         class="hidden fixed bottom-6 right-6 z-[150] w-14 h-14 bg-white hover:bg-zinc-100 rounded-full flex items-center justify-center shadow-2xl cursor-pointer transition-all active:scale-95 ring-1 ring-emerald-400/30 overflow-hidden">
+        <img src="https://i.ibb.co/rKs8zGVN/Logo-Zalo-Arc.png" alt="Zalo Support" class="w-9 h-9 object-contain">
+    </div>
+
+    <div id="toast-container" class="fixed top-4 right-4 z-[300] flex flex-col gap-2 pointer-events-none"></div>
+
+    <script src="js/roblox-avatar.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
