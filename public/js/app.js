@@ -2,11 +2,11 @@
 
 let currentUser = null;
 let packages = [
-    { id: 1, robux: 400, bonus: 0, price: 50000, label: "Phổ thông" },
-    { id: 2, robux: 800, bonus: 100, price: 100000, label: "Tiết kiệm" },
-    { id: 3, robux: 1700, bonus: 200, price: 200000, label: "Hot nhất" },
-    { id: 4, robux: 4500, bonus: 500, price: 300000, label: "Siêu tiết kiệm" },
-    { id: 5, robux: 10000, bonus: 1000, price: 500000, label: "VIP" }
+    { id: 1, robux: 400, bonus: 0, price: 120000, label: "Phổ thông" },
+    { id: 2, robux: 800, bonus: 50, price: 235000, label: "Tiết kiệm" },
+    { id: 3, robux: 1700, bonus: 120, price: 499000, label: "Hot nhất" },
+    { id: 4, robux: 4500, bonus: 350, price: 1299000, label: "Siêu tiết kiệm" },
+    { id: 5, robux: 10000, bonus: 900, price: 2850000, label: "VIP" }
 ];
 let selectedPackageId = null;
 let selectedPaymentMethod = 'momo';
