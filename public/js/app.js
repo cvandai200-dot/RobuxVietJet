@@ -659,6 +659,29 @@ async function updateOrderStatus(orderId, newStatus) {
     }
 }
 
+async function adminResetUserPassword(userId, username) {
+    const newPass = prompt(`Nhập mật khẩu mới cho "${username}":`);
+    if (!newPass) return;
+    if (newPass.length < 4) return alert('Mật khẩu phải ≥ 4 ký tự');
+
+    try {
+        const res = await fetch(`/api/users/${userId}/password`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newPassword: newPass })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            alert(`Đã đổi mật khẩu thành công cho ${username}`);
+        } else {
+            alert(data.error || 'Đổi mật khẩu thất bại');
+        }
+    } catch (err) {
+        alert('Lỗi kết nối server');
+    }
+}
+
 function renderAdminPackages() {
     const container = document.getElementById('admin-packages-list');
     container.innerHTML = '';
@@ -711,22 +734,45 @@ async function updatePackagePrice(packageId) {
     }
 }
 
-function renderAdminUsers() {
+async function renderAdminUsers() {
     const tbody = document.getElementById('admin-users-body');
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    tbody.innerHTML = '';
-    users.forEach(user => {
-        const userOrders = orders.filter(o => o.userId === user.id);
-        const totalSpent = userOrders.reduce((sum, o) => sum + o.total, 0);
-        tbody.innerHTML += `
-            <tr class="hover:bg-zinc-800">
-                <td class="px-4 md:px-6 py-4 font-semibold">${user.username} ${user.role === 'admin' ? '<span class="text-xs bg-red-900 text-red-300 px-2 rounded ml-1">Admin</span>' : ''}</td>
-                <td class="px-4 md:px-6 py-4 text-xs text-zinc-400 hidden md:table-cell">${new Date(user.joined).toLocaleDateString('vi-VN')}</td>
-                <td class="px-4 md:px-6 py-4 text-right">${userOrders.length}</td>
-                <td class="px-4 md:px-6 py-4 text-right font-mono tabular-nums">${totalSpent.toLocaleString('vi-VN')}đ</td>
-            </tr>`;
-    });
+    
+    try {
+        const [users, orders] = await Promise.all([
+            (await fetch('/api/users')).json(),
+            (await fetch('/api/orders')).json()
+        ]);
+
+        tbody.innerHTML = '';
+        
+        users.forEach(user => {
+            const userOrders = orders.filter(o => o.userId === user.id);
+            const totalSpent = userOrders.reduce((sum, o) => sum + o.total, 0);
+            
+            tbody.innerHTML += `
+                <tr class="hover:bg-zinc-800">
+                    <td class="px-4 md:px-6 py-4 font-semibold">
+                        ${user.username} 
+                        ${user.role === 'admin' ? '<span class="text-xs bg-red-900 text-red-300 px-2 rounded ml-1">Admin</span>' : ''}
+                    </td>
+                    <td class="px-4 md:px-6 py-4 text-xs text-zinc-400 hidden md:table-cell">
+                        ${new Date(user.joined).toLocaleDateString('vi-VN')}
+                    </td>
+                    <td class="px-4 md:px-6 py-4 text-right">${userOrders.length}</td>
+                    <td class="px-4 md:px-6 py-4 text-right font-mono tabular-nums">
+                        ${totalSpent.toLocaleString('vi-VN')}đ
+                    </td>
+                    <td class="px-4 md:px-6 py-4 text-center">
+                        <button onclick="adminResetUserPassword(${user.id}, '${user.username}')" 
+                                class="px-3 py-1 text-xs bg-sky-600 hover:bg-sky-500 rounded-xl">
+                            Đổi mật khẩu
+                        </button>
+                    </td>
+                </tr>`;
+        });
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-400">Lỗi tải danh sách người dùng</td></tr>`;
+    }
 }
 
 function seedDemoData() {

@@ -117,7 +117,7 @@ app.put('/api/packages/:id', (req, res) => {
 });
 
 // Admin đổi mật khẩu cho user
-app.put('/api/users/:id/password', (req, res) => {
+app.put('/api/users/:id/password', async (req, res) => {
     const { id } = req.params;
     const { newPassword } = req.body;
     
@@ -130,14 +130,17 @@ app.put('/api/users/:id/password', (req, res) => {
     
     if (index === -1) return res.status(404).json({ error: 'User not found' });
     
-    users[index].password = newPassword;
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    users[index].password = hashedPassword;
     writeData(USERS_FILE, users);
     
     res.json({ success: true });
 });
 
 // Register new user
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
     
     if (!username || !email || !password) {
@@ -153,11 +156,14 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ error: 'Email đã được sử dụng' });
     }
     
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const newUser = {
         id: Date.now(),
         username,
         email,
-        password,
+        password: hashedPassword,
         role: 'user',
         joined: new Date().toISOString()
     };
@@ -169,13 +175,20 @@ app.post('/api/register', (req, res) => {
 });
 
 // Login
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     const users = readData(USERS_FILE);
     
-    const user = users.find(u => u.username === username && u.password === password);
+    const user = users.find(u => u.username === username);
     
     if (!user) {
+        return res.status(401).json({ error: 'Sai tên đăng nhập hoặc mật khẩu' });
+    }
+    
+    // Compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    if (!isMatch) {
         return res.status(401).json({ error: 'Sai tên đăng nhập hoặc mật khẩu' });
     }
     
